@@ -7,6 +7,7 @@ import { useActiveSection } from "@/lib/useActiveSection"
 import { HeroSection } from "@/components/sections/HeroSection"
 import { AboutSection } from "@/components/sections/AboutSection"
 import { ContactSection } from "@/components/sections/ContactSection"
+import { WorkSection } from "@/components/sections/WorkSection"
 
 export default function Home() {
   const { activeSection, scrollTo } = useActiveSection()
@@ -25,7 +26,7 @@ export default function Home() {
           <HeroSection />
         </section>
         <section id="work" className="min-h-screen snap-center flex items-center justify-center">
-          <p className="max-w-[720px] mx-auto px-4 lg:ml-[360px]">Work — coming next</p>
+          <WorkSection />
         </section>
         <section id="about" className="h-screen snap-center flex items-center justify-center">
           <AboutSection />
