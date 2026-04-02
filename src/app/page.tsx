@@ -4,6 +4,9 @@ import { LeftNav } from "@/components/layout/LeftNav"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { MobileScrubber } from "@/components/layout/MobileScrubber"
 import { useActiveSection } from "@/lib/useActiveSection"
+import { HeroSection } from "@/components/sections/HeroSection"
+import { AboutSection } from "@/components/sections/AboutSection"
+import { ContactSection } from "@/components/sections/ContactSection"
 
 export default function Home() {
   const { activeSection, scrollTo } = useActiveSection()
@@ -19,16 +22,16 @@ export default function Home() {
         className="h-screen overflow-y-scroll snap-y snap-mandatory"
       >
         <section id="hero" className="h-screen snap-center flex items-center justify-center">
-          <p>Hero</p>
+          <HeroSection />
         </section>
         <section id="work" className="min-h-screen snap-center flex items-center justify-center">
-          <p>Work</p>
+          <p className="max-w-[720px] mx-auto px-4 lg:ml-[360px]">Work — coming next</p>
         </section>
         <section id="about" className="h-screen snap-center flex items-center justify-center">
-          <p>About</p>
+          <AboutSection />
         </section>
         <section id="contact" className="h-screen snap-center flex items-center justify-center">
-          <p>Contact</p>
+          <ContactSection />
         </section>
       </div>
     </>
