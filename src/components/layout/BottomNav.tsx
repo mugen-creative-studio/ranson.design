@@ -12,7 +12,16 @@ interface BottomNavProps {
 
 export function BottomNav({ activeSection, onNavigate }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 flex justify-center gap-1 py-2 bg-white/90 backdrop-blur border-t border-gray-200 lg:hidden max-[375px]:hidden z-50">
+    <nav
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center justify-between gap-1 p-1 rounded-full z-50 hidden max-[575px]:hidden md:flex lg:hidden"
+      style={{
+        backdropFilter: "blur(6px)",
+        WebkitBackdropFilter: "blur(6px)",
+        background: "rgba(199,199,199,0.36)",
+        border: "1px solid #f7f8f9",
+        boxShadow: "2px 2px 6px rgba(0,0,0,0.05), 8px 8px 16px rgba(0,0,0,0.05)",
+      }}
+    >
       {SECTIONS.map((section) => (
         <NavIcon
           key={section}
