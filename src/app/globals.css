@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@theme {
+  /* Colors — extracted from Figma */
+  --color-navy: #1B2A4A;
+  --color-navy-light: #2D3E5F;
+  --color-gray-100: #F5F5F5;
+  --color-gray-200: #E5E5E5;
+  --color-gray-500: #6B7280;
+  --color-white: #FFFFFF;
+
+  /* Typography — update values after Figma extraction */
+  --font-heading: 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing */
+  --spacing-section-x: 40px;
+  --spacing-content-gap: 40px;
+
+  /* Breakpoints */
+  --breakpoint-xs: 375px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1440px;
+}
