@@ -19,7 +19,6 @@ export function BottomNav({ activeSection, onNavigate }: BottomNavProps) {
           section={section}
           isActive={activeSection === section}
           onClick={() => onNavigate(section)}
-          showLabel
         />
       ))}
     </nav>

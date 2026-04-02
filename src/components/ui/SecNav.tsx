@@ -9,24 +9,35 @@ interface SecNavProps {
 
 export function SecNav({ active, onChange }: SecNavProps) {
   return (
-    <div className="flex gap-0 bg-gray-100 rounded-full p-1 w-fit">
+    <div
+      className="flex items-center rounded-full"
+      style={{
+        background: "#ffffff",
+        border: "1px solid #e5e7eb",
+        height: "36px",
+        width: "232px",
+        padding: "2px",
+      }}
+    >
       <button
         onClick={() => onChange("professional")}
-        className={`px-4 py-1.5 rounded-full text-sm transition-colors ${
+        className="flex-1 h-full rounded-full text-[16px] font-normal leading-[32px] tracking-[0.16px] transition-colors"
+        style={
           active === "professional"
-            ? "bg-navy text-white"
-            : "text-gray-500 hover:text-navy"
-        }`}
+            ? { background: "#2b4159", color: "#f7f8f9" }
+            : { background: "transparent", color: "#2b4159" }
+        }
       >
         Professional
       </button>
       <button
         onClick={() => onChange("personal")}
-        className={`px-4 py-1.5 rounded-full text-sm transition-colors ${
+        className="flex-1 h-full rounded-full text-[16px] font-normal leading-[32px] tracking-[0.16px] transition-colors"
+        style={
           active === "personal"
-            ? "bg-navy text-white"
-            : "text-gray-500 hover:text-navy"
-        }`}
+            ? { background: "#2b4159", color: "#f7f8f9" }
+            : { background: "transparent", color: "#2b4159" }
+        }
       >
         Personal
       </button>

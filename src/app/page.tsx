@@ -14,24 +14,41 @@ export default function Home() {
 
   return (
     <>
+      {/* Left nav — fixed, 280px wide */}
       <LeftNav activeSection={activeSection} onNavigate={scrollTo} />
+
+      {/* Mobile navs */}
       <BottomNav activeSection={activeSection} onNavigate={scrollTo} />
       <MobileScrubber activeSection={activeSection} onNavigate={scrollTo} />
 
+      {/* Main scroll container — centered between the two sidebars */}
       <div
         id="scroll-container"
         className="h-screen overflow-y-scroll snap-y snap-mandatory"
+        style={{ paddingLeft: "280px", paddingRight: "280px" }}
       >
-        <section id="hero" className="h-screen snap-center flex items-center justify-center">
+        <section
+          id="hero"
+          className="h-screen snap-center flex items-center justify-center"
+        >
           <HeroSection />
         </section>
-        <section id="work" className="min-h-screen snap-center flex items-center justify-center">
+        <section
+          id="work"
+          className="min-h-screen snap-center flex items-center justify-center py-20"
+        >
           <WorkSection />
         </section>
-        <section id="about" className="h-screen snap-center flex items-center justify-center">
+        <section
+          id="about"
+          className="h-screen snap-center flex items-center justify-center"
+        >
           <AboutSection />
         </section>
-        <section id="contact" className="h-screen snap-center flex items-center justify-center">
+        <section
+          id="contact"
+          className="h-screen snap-center flex items-center justify-center"
+        >
           <ContactSection />
         </section>
       </div>

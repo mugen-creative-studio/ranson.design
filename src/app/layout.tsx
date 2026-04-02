@@ -1,5 +1,9 @@
 import type { Metadata } from "next"
+import { DM_Sans } from "next/font/google"
+import { RightSidebar } from "@/components/layout/RightSidebar"
 import "./globals.css"
+
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500", "600"] })
 
 export const metadata: Metadata = {
   title: "Ranson Vorpahl — Full-Stack Designer",
@@ -14,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-white text-navy antialiased">{children}</body>
+      <body className={`${dmSans.className} bg-white text-[#2b4159] antialiased`}>
+        <RightSidebar />
+        {children}
+      </body>
     </html>
   )
 }

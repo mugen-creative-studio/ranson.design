@@ -1,39 +1,44 @@
 // src/components/layout/NavIcon.tsx
 
+"use client"
+
 import type { Section } from "@/lib/useActiveSection"
 
 interface NavIconProps {
   section: Section
   isActive: boolean
   onClick: () => void
-  showLabel?: boolean
 }
 
-const ICONS: Record<Section, { label: string }> = {
-  hero: { label: "Home" },
-  work: { label: "Work" },
-  about: { label: "About" },
-  contact: { label: "Contact" },
+const NAV_ITEMS: Record<Section, { label: string; icon: string }> = {
+  hero: { label: "Home", icon: "/icons/monitor-up.svg" },
+  work: { label: "Work", icon: "/icons/component.svg" },
+  about: { label: "About", icon: "/icons/sticker.svg" },
+  contact: { label: "Contact", icon: "/icons/smartphone-nfc.svg" },
 }
 
-export function NavIcon({ section, isActive, onClick, showLabel = false }: NavIconProps) {
-  const { label } = ICONS[section]
+export function NavIcon({ section, isActive, onClick }: NavIconProps) {
+  const { label, icon } = NAV_ITEMS[section]
 
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
+      className={`flex items-center gap-2 transition-all ${
         isActive
-          ? "bg-gray-100 text-navy font-medium"
-          : "text-gray-500 hover:text-navy"
+          ? "bg-[#f7f8f9] rounded-full px-4 py-2"
+          : "px-2 py-2"
       }`}
       aria-label={`Navigate to ${label}`}
       aria-current={isActive ? "true" : undefined}
     >
-      <span className="w-5 h-5 flex items-center justify-center text-sm">
-        {label[0]}
-      </span>
-      {showLabel && <span className="text-sm">{label}</span>}
+      <img src={icon} alt={label} width={22} height={22} className="shrink-0" />
+      {isActive && (
+        <span
+          className="text-[20px] font-medium leading-[24px] text-[#2b4159] whitespace-nowrap"
+        >
+          {label}
+        </span>
+      )}
     </button>
   )
 }

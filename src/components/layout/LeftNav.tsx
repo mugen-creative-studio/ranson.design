@@ -12,14 +12,15 @@ interface LeftNavProps {
 
 export function LeftNav({ activeSection, onNavigate }: LeftNavProps) {
   return (
-    <nav className="fixed left-10 top-1/2 -translate-y-1/2 flex-col gap-6 hidden lg:flex z-50">
+    <nav
+      className="fixed left-0 top-1/2 -translate-y-1/2 w-[280px] flex-col gap-8 items-center hidden lg:flex z-50"
+    >
       {SECTIONS.map((section) => (
         <NavIcon
           key={section}
           section={section}
           isActive={activeSection === section}
           onClick={() => onNavigate(section)}
-          showLabel
         />
       ))}
     </nav>
