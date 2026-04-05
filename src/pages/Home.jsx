@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router'
-import useActiveSection, { SECTIONS } from '../hooks/useActiveSection.js'
+import useActiveSection from '../hooks/useActiveSection.js'
+import LeftNav from '../components/LeftNav.jsx'
+import HeroSection from '../components/HeroSection.jsx'
 import styles from './Home.module.css'
 
 export default function Home() {
@@ -21,22 +23,12 @@ export default function Home() {
 
   return (
     <div className={styles.layout}>
-      <nav className={styles.nav}>
-        {SECTIONS.map((id) => (
-          <button
-            key={id}
-            className={`${styles.navItem} ${active === id ? styles.active : ''}`}
-            onClick={() => scrollTo(id)}
-          >
-            {id}
-          </button>
-        ))}
-      </nav>
+      <LeftNav active={active} onNavigate={scrollTo} />
       <main className={styles.main}>
-        <section id="hero" className={styles.section}>Hero</section>
-        <section id="projects" className={styles.section}>Projects</section>
-        <section id="about" className={styles.section}>About</section>
-        <section id="contact" className={styles.section}>Contact</section>
+        <HeroSection />
+        <section id="projects" className={styles.placeholder}>Projects</section>
+        <section id="about" className={styles.placeholder}>About</section>
+        <section id="contact" className={styles.placeholder}>Contact</section>
       </main>
     </div>
   )

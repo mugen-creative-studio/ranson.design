@@ -1,3 +1,48 @@
 :root {
-  /* filled in from Figma as we build components */
+  /* primitives */
+  --color-slate-900: #2b4159;
+  --color-gray-50: #f7f8f9;
+  --color-white: #ffffff;
+
+  /* semantic */
+  --color-text: var(--color-slate-900);
+  --color-bg: var(--color-white);
+  --color-bg-component: var(--color-gray-50);
+  --color-bg-hover: #e2e2e2;
+
+  /* spacing */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-80: 80px;
+
+  /* typography */
+  --font-family: 'DM Sans Variable', sans-serif;
+
+  --font-size-h1: 68px;
+  --line-height-h1: 74px;
+  --letter-spacing-h1: 2px;
+  --font-weight-h1: 600;
+
+  --font-size-h2-hero: 42px;
+  --line-height-h2-hero: 64px;
+  --letter-spacing-h2-hero: -1.5px;
+
+  --font-size-h3: 26px;
+  --line-height-h3: 48px;
+  --letter-spacing-h3: -1px;
+
+  --font-size-button: 20px;
+  --line-height-button: 24px;
+  --font-weight-button: 500;
+
+  /* layout */
+  --nav-width: 148px;
+  --content-max-width: 898px;
+  --container-max-width: 1440px;
+
+  /* radius */
+  --radius-round: 9999px;
 }
