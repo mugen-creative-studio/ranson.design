@@ -1,0 +1,54 @@
+.layout {
+  display: flex;
+  min-height: 100dvh;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 16px;
+  height: 100dvh;
+  z-index: 10;
+}
+
+.navItem {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  text-transform: capitalize;
+  color: #999;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.navItem:hover {
+  color: #fff;
+}
+
+.navItem.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.main {
+  flex: 1;
+  margin-left: 140px;
+  max-width: 1440px;
+}
+
+.section {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #666;
+}
