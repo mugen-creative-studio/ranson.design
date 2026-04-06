@@ -1,3 +1,4 @@
+import { useRef, useCallback } from 'react'
 import { MonitorUp, Component, Sticker, SmartphoneNfc } from 'lucide-react'
 import NavItem from './NavItem'
 import styles from './LeftNav.module.css'
@@ -10,6 +11,15 @@ const NAV_ITEMS = [
 ]
 
 export default function LeftNav({ active, onNavigate }) {
+  const clickTargetRef = useRef(null)
+
+  const handleClick = useCallback((id) => {
+    clickTargetRef.current = id
+    onNavigate(id)
+    // Reset after the scroll + IntersectionObserver have time to settle
+    setTimeout(() => { clickTargetRef.current = null }, 800)
+  }, [onNavigate])
+
   return (
     <nav className={styles.nav}>
       {NAV_ITEMS.map(({ id, label, icon }) => (
@@ -18,7 +28,9 @@ export default function LeftNav({ active, onNavigate }) {
           icon={icon}
           label={label}
           isActive={active === id}
-          onClick={() => onNavigate(id)}
+          clickTargetRef={clickTargetRef}
+          sectionId={id}
+          onClick={() => handleClick(id)}
         />
       ))}
     </nav>
