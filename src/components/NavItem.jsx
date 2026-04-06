@@ -89,7 +89,7 @@ export default function NavItem({ icon: Icon, label, isActive, clickTargetRef, s
       labelAnimRef.current = null
     }
 
-    const duration = fast ? 200 : 450
+    const duration = 450
     const easing = 'cubic-bezier(0.4, 0, 0.2, 1)'
 
     const targetStyles = fast ? ACTIVE_STYLES : HOVER_STYLES
