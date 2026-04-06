@@ -6,9 +6,14 @@
 
   /* semantic */
   --color-text: var(--color-slate-900);
+  --color-fg-secondary: #4b5563;
   --color-bg: var(--color-white);
   --color-bg-component: var(--color-gray-50);
-  --color-bg-hover: #e2e2e2;
+  --color-bg-hover: var(--color-white);
+  --color-bdr-bound: var(--color-gray-50);
+
+  /* effects */
+  --shadow-xs: 1px 1px 4px 0px rgba(34, 34, 34, 0.1);
 
   /* spacing */
   --space-4: 4px;
