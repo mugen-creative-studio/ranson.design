@@ -23,13 +23,16 @@ export default function Home() {
 
   return (
     <div className={styles.layout}>
-      <LeftNav active={active} onNavigate={scrollTo} />
+      <div className={styles.leftColumn}>
+        <LeftNav active={active} onNavigate={scrollTo} />
+      </div>
       <main className={styles.main}>
         <HeroSection />
         <section id="projects" className={styles.placeholder}>Projects</section>
         <section id="about" className={styles.placeholder}>About</section>
         <section id="contact" className={styles.placeholder}>Contact</section>
       </main>
+      <div className={styles.rightColumn} />
     </div>
   )
 }
