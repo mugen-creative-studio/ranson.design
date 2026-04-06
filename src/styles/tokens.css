@@ -41,6 +41,7 @@
   /* layout */
   --nav-width: 148px;
   --content-max-width: 898px;
+  --content-min-width: 343px;
   --container-max-width: 1440px;
 
   /* radius */
