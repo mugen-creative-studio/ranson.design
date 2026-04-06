@@ -11,6 +11,7 @@
   --color-bg-component: var(--color-gray-50);
   --color-bg-hover: var(--color-white);
   --color-bdr-bound: var(--color-gray-50);
+  --color-accent-red: #ff0f3b;
 
   /* effects */
   --shadow-xs: 1px 1px 4px 0px rgba(34, 34, 34, 0.1);
@@ -23,25 +24,84 @@
   --space-40: 40px;
   --space-80: 80px;
 
-  /* typography */
+  /* typography — matches Figma text styles */
   --font-family: 'DM Sans Variable', sans-serif;
 
+  /* D1: 128/154, Regular, 3% */
+  --font-size-d1: 128px;
+  --line-height-d1: 154px;
+  --letter-spacing-d1: 3%;
+  --font-weight-d1: 400;
+
+  /* D2: 110/138, Medium, 3% */
+  --font-size-d2: 110px;
+  --line-height-d2: 138px;
+  --letter-spacing-d2: 3%;
+  --font-weight-d2: 500;
+
+  /* h1/reg: 68/85, Regular, 2px */
   --font-size-h1: 68px;
-  --line-height-h1: 74px;
+  --line-height-h1-reg: 85px;
   --letter-spacing-h1: 2px;
-  --font-weight-h1: 600;
+  --font-weight-h1-reg: 400;
 
-  --font-size-h2-hero: 42px;
+  /* h1/bold: 68/74, SemiBold, 2px */
+  --line-height-h1-bold: 74px;
+  --font-weight-h1-bold: 600;
+
+  /* h2/reg: 42/52, Regular, 0% */
+  --font-size-h2: 42px;
+  --line-height-h2-reg: 52px;
+  --letter-spacing-h2-reg: 0%;
+  --font-weight-h2-reg: 400;
+
+  /* h2/bold: 42/52, SemiBold, -1.5% */
+  --font-weight-h2-bold: 600;
+  --letter-spacing-h2-bold: -1.5%;
+
+  /* h2/hero: 42/64, Regular, -1.5% */
   --line-height-h2-hero: 64px;
-  --letter-spacing-h2-hero: -1.5px;
+  --letter-spacing-h2-hero: -1.5%;
 
+  /* h3/reg: 26/48, Regular, -1% */
   --font-size-h3: 26px;
-  --line-height-h3: 48px;
-  --letter-spacing-h3: -1px;
+  --line-height-h3-reg: 48px;
+  --letter-spacing-h3: -1%;
+  --font-weight-h3-reg: 400;
 
+  /* h3/bold: 26/32, SemiBold, -1% */
+  --line-height-h3-bold: 32px;
+  --font-weight-h3-bold: 600;
+
+  /* h3/presentation: 26/52, Regular, -1% */
+  --line-height-h3-presentation: 52px;
+
+  /* p/reg: 16/32, Regular, 1% */
+  --font-size-p: 16px;
+  --line-height-p: 32px;
+  --letter-spacing-p: 1%;
+  --font-weight-p-reg: 400;
+
+  /* p/bold-button: 16/32, SemiBold, 1% */
+  --font-weight-p-bold: 600;
+
+  /* p/italics-bold: 16/32, SemiBold Italic, 1% */
+
+  /* sm/reg: 12/24, Medium, 2% */
+  --font-size-sm: 12px;
+  --line-height-sm: 24px;
+  --letter-spacing-sm: 2%;
+  --font-weight-sm: 500;
+
+  /* button/regular: 20/24, Medium, 0% */
   --font-size-button: 20px;
   --line-height-button: 24px;
+  --letter-spacing-button: 0%;
   --font-weight-button: 500;
+
+  /* button/16px: 16/16, Medium, 0% */
+  --font-size-button-sm: 16px;
+  --line-height-button-sm: 16px;
 
   /* layout */
   --nav-width: 148px;
@@ -49,6 +109,13 @@
   --content-min-width: 343px;
   --container-max-width: 1440px;
 
+  /* borders */
+  --color-border: #e5e7eb;
+
   /* radius */
+  --radius-card: 8px;
   --radius-round: 9999px;
+
+  /* shadows */
+  --shadow-card: 4px 4px 16px rgba(0, 0, 0, 0.25);
 }

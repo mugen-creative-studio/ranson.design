@@ -28,6 +28,19 @@
 
 }
 
+.projectsContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+  width: 100%;
+}
+
+.projectGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
 .placeholder {
   font-size: 32px;
   color: #999;

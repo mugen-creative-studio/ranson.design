@@ -4,6 +4,9 @@ import useActiveSection from '../hooks/useActiveSection.js'
 import useSectionSnap from '../hooks/useSectionSnap.js'
 import LeftNav from '../components/LeftNav.jsx'
 import HeroSection from '../components/HeroSection.jsx'
+import ProjectsHeader from '../components/ProjectsHeader.jsx'
+import ProjectCard from '../components/ProjectCard.jsx'
+import AboutHeader from '../components/AboutHeader.jsx'
 import styles from './Home.module.css'
 
 export default function Home() {
@@ -32,8 +35,19 @@ export default function Home() {
         <section id="hero" className={styles.section}>
           <HeroSection />
         </section>
-        <section id="projects" className={`${styles.section} ${styles.placeholder}`}>Projects</section>
-        <section id="about" className={`${styles.section} ${styles.placeholder}`}>About</section>
+        <section id="projects" className={styles.section}>
+          <div className={styles.projectsContent}>
+            <ProjectsHeader />
+            <div className={styles.projectGrid}>
+              <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
+              <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
+              <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
+            </div>
+          </div>
+        </section>
+        <section id="about" className={styles.section}>
+          <AboutHeader />
+        </section>
         <section id="contact" className={`${styles.section} ${styles.placeholder}`}>Contact</section>
       </main>
       <div className={styles.rightColumn} />

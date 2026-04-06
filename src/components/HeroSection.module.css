@@ -1,7 +1,7 @@
 .hero {
   display: flex;
   flex-direction: column;
-  gap: var(--space-16);
+  gap: var(--space-32);
   color: var(--color-text);
 }
 
@@ -12,29 +12,29 @@
 }
 
 .intro {
-  font-size: var(--font-size-h3);
+  font-size: 26px;
   font-weight: 400;
-  line-height: var(--line-height-h3);
-  letter-spacing: var(--letter-spacing-h3);
+  line-height: 48px;
+  letter-spacing: -0.26px;
 }
 
 .name {
-  font-size: var(--font-size-h1);
-  font-weight: var(--font-weight-h1);
-  line-height: var(--line-height-h1);
-  letter-spacing: var(--letter-spacing-h1);
+  font-size: 68px;
+  font-weight: 600;
+  line-height: 74px;
+  letter-spacing: 2px;
 }
 
 .tagline {
-  font-size: var(--font-size-h2-hero);
+  font-size: 42px;
   font-weight: 400;
-  line-height: var(--line-height-h2-hero);
-  letter-spacing: var(--letter-spacing-h2-hero);
+  line-height: 64px;
+  letter-spacing: -0.63px;
 }
 
 .current {
-  font-size: var(--font-size-h3);
+  font-size: 26px;
   font-weight: 400;
-  line-height: var(--line-height-h3);
-  letter-spacing: var(--letter-spacing-h3);
+  line-height: 48px;
+  letter-spacing: -0.26px;
 }

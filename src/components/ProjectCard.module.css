@@ -1,0 +1,126 @@
+.card {
+  position: relative;
+  background: var(--color-bg-component);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* --- Vertical layout --- */
+
+.vertical {
+  height: 348px;
+  flex: 1 1 calc(50% - var(--space-16));
+  max-width: calc(50% - var(--space-8));
+  min-width: 0;
+}
+
+.vertical .imageArea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.vertical .content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: white;
+  overflow: hidden;
+  transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vertical:hover .content {
+  height: 128px;
+}
+
+.vertical .title {
+  position: absolute;
+  left: 16px;
+  top: 5px;
+}
+
+.vertical .description {
+  position: absolute;
+  left: 16px;
+  top: 53px;
+}
+
+.verticalLg .title {
+  left: 24px;
+  top: 13px;
+}
+
+.verticalLg .description {
+  left: 24px;
+  top: 61px;
+}
+
+/* --- Horizontal layout --- */
+
+.horizontal {
+  display: flex;
+  height: 348px;
+  width: 100%;
+}
+
+.horizontal .imageArea {
+  flex: 1 0 0;
+  min-width: 0;
+  transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.horizontal .content {
+  flex: 1 0 0;
+  min-width: 0;
+  position: relative;
+  background: white;
+  overflow: hidden;
+  transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.horizontal:hover .imageArea {
+  flex: 3 0 0;
+}
+
+.horizontal:hover .content {
+  flex: 1 0 0;
+}
+
+.horizontal .title {
+  position: absolute;
+  left: 24px;
+  top: 16px;
+}
+
+.horizontal .description {
+  position: absolute;
+  left: 24px;
+  top: 64px;
+}
+
+/* --- Shared typography --- */
+
+.title {
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 48px;
+  letter-spacing: -0.26px;
+  white-space: nowrap;
+  color: black;
+}
+
+.description {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+  letter-spacing: 0.16px;
+  white-space: nowrap;
+  color: black;
+}
