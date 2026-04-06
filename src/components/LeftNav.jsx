@@ -1,4 +1,5 @@
 import { MonitorUp, Component, Sticker, SmartphoneNfc } from 'lucide-react'
+import NavItem from './NavItem'
 import styles from './LeftNav.module.css'
 
 const NAV_ITEMS = [
@@ -11,21 +12,15 @@ const NAV_ITEMS = [
 export default function LeftNav({ active, onNavigate }) {
   return (
     <nav className={styles.nav}>
-      {NAV_ITEMS.map(({ id, label, icon: Icon }) => {
-        const isActive = active === id
-        return (
-          <button
-            key={id}
-            className={`${styles.item} ${isActive ? styles.active : ''}`}
-            onClick={() => onNavigate(id)}
-          >
-            <div className={styles.pill}>
-              <Icon size={22} strokeWidth={1.5} />
-              <span className={styles.label}>{label}</span>
-            </div>
-          </button>
-        )
-      })}
+      {NAV_ITEMS.map(({ id, label, icon }) => (
+        <NavItem
+          key={id}
+          icon={icon}
+          label={label}
+          isActive={active === id}
+          onClick={() => onNavigate(id)}
+        />
+      ))}
     </nav>
   )
 }
