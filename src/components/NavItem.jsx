@@ -14,6 +14,8 @@ export default function NavItem({ icon: Icon, label, isActive, onClick }) {
     }
   }, [label])
 
+  const initializedRef = useRef(false)
+
   const ICON_SIZE = 22
   const PILL_PADDING_COLLAPSED = 5
   const PILL_PADDING_V = 8
@@ -23,8 +25,33 @@ export default function NavItem({ icon: Icon, label, isActive, onClick }) {
   const collapsedWidth = ICON_SIZE + PILL_PADDING_COLLAPSED * 2
   const expandedWidth = PILL_PADDING_H + ICON_SIZE + GAP + labelWidth + PILL_PADDING_H
 
+  useEffect(() => {
+    if (!initializedRef.current && isActive && pillRef.current && labelRef.current && labelWidth > 0) {
+      initializedRef.current = true
+      const bgColor = 'var(--color-bg-component)'
+      pillRef.current.style.width = `${expandedWidth}px`
+      pillRef.current.style.padding = `${PILL_PADDING_V}px ${PILL_PADDING_H}px`
+      pillRef.current.style.background = bgColor
+      labelRef.current.style.width = `${labelWidth}px`
+      labelRef.current.style.opacity = '1'
+    } else if (!initializedRef.current && labelWidth > 0) {
+      initializedRef.current = true
+    }
+  }, [isActive, labelWidth, expandedWidth])
+
   const animate = useCallback((expand, fast) => {
     if (!pillRef.current || !labelRef.current) return
+
+    // Clear any inline styles from initialization
+    if (pillRef.current) {
+      pillRef.current.style.width = ''
+      pillRef.current.style.padding = ''
+      pillRef.current.style.background = ''
+    }
+    if (labelRef.current) {
+      labelRef.current.style.width = ''
+      labelRef.current.style.opacity = ''
+    }
 
     if (animationRef.current) {
       animationRef.current.cancel()
@@ -135,11 +162,33 @@ export default function NavItem({ icon: Icon, label, isActive, onClick }) {
     prevActiveRef.current = isActive
 
     if (isActive && !wasActive) {
-      if (!hovered) {
+      if (hovered) {
+        // Already expanded from hover — just swap the background color
+        if (pillRef.current) {
+          pillRef.current.animate(
+            [
+              { background: 'var(--color-bg-hover)' },
+              { background: 'var(--color-bg-component)' },
+            ],
+            { duration: 150, easing: 'ease-out', fill: 'forwards' }
+          )
+        }
+      } else {
         animate(true, true)
       }
     } else if (!isActive && wasActive) {
-      if (!hovered) {
+      if (hovered) {
+        // Still hovered — swap back to hover color
+        if (pillRef.current) {
+          pillRef.current.animate(
+            [
+              { background: 'var(--color-bg-component)' },
+              { background: 'var(--color-bg-hover)' },
+            ],
+            { duration: 150, easing: 'ease-out', fill: 'forwards' }
+          )
+        }
+      } else {
         animate(false, true)
       }
     }
