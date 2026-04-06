@@ -2,7 +2,7 @@ import styles from './HeroSection.module.css'
 
 export default function HeroSection() {
   return (
-    <section id="hero" className={styles.hero}>
+    <div className={styles.hero}>
       <div className={styles.headline}>
         <p className={styles.intro}>Hi, my name is</p>
         <h1 className={styles.name}>Ranson Vorpahl</h1>
@@ -17,6 +17,6 @@ export default function HeroSection() {
         businesses of all sizes grow their Social Media presence, with recent
         work exploring ways AI can streamline the process.
       </p>
-    </section>
+    </div>
   )
 }

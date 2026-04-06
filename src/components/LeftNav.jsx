@@ -3,7 +3,7 @@ import styles from './LeftNav.module.css'
 
 const NAV_ITEMS = [
   { id: 'hero', label: 'Home', icon: MonitorUp },
-  { id: 'projects', label: 'Work', icon: Component },
+  { id: 'projects', label: 'Projects', icon: Component },
   { id: 'about', label: 'About', icon: Sticker },
   { id: 'contact', label: 'Contact', icon: SmartphoneNfc },
 ]
