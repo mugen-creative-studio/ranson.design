@@ -36,8 +36,8 @@ export default function Home() {
     setFading(true)
   }
 
-  function handleFadeEnd() {
-    if (!fading) return
+  function handleFadeEnd(e) {
+    if (e.propertyName !== 'opacity') return
     if (pendingCategory.current) {
       setProjectCategory(pendingCategory.current)
       pendingCategory.current = null
