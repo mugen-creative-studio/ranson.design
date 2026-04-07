@@ -1,10 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router'
 import useActiveSection from '../hooks/useActiveSection.js'
 import useSectionSnap from '../hooks/useSectionSnap.js'
 import LeftNav from '../components/LeftNav.jsx'
 import HeroSection from '../components/HeroSection.jsx'
 import ProjectsHeader from '../components/ProjectsHeader.jsx'
+import SecNav from '../components/SecNav.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
 import AboutHeader from '../components/AboutHeader.jsx'
 import styles from './Home.module.css'
@@ -13,6 +14,9 @@ export default function Home() {
   const active = useActiveSection()
   const { hash } = useLocation()
   const navigateTo = useSectionSnap()
+  const [projectCategory, setProjectCategory] = useState('professional')
+  const [fading, setFading] = useState(false)
+  const pendingCategory = useRef(null)
 
   useEffect(() => {
     if (hash) {
@@ -24,6 +28,21 @@ export default function Home() {
   function scrollTo(id) {
     const idx = ['hero', 'projects', 'about', 'contact'].indexOf(id)
     if (idx !== -1) navigateTo(idx)
+  }
+
+  function handleCategoryChange(category) {
+    if (category === projectCategory) return
+    pendingCategory.current = category
+    setFading(true)
+  }
+
+  function handleFadeEnd() {
+    if (!fading) return
+    if (pendingCategory.current) {
+      setProjectCategory(pendingCategory.current)
+      pendingCategory.current = null
+    }
+    setFading(false)
   }
 
   return (
@@ -38,7 +57,11 @@ export default function Home() {
         <section id="projects" className={styles.section}>
           <div className={styles.projectsContent}>
             <ProjectsHeader />
-            <div className={styles.projectGrid}>
+            <SecNav selection={projectCategory} onSelect={handleCategoryChange} />
+            <div
+              className={`${styles.projectGrid} ${styles.projectGridWrapper} ${fading ? styles.projectGridFading : ''}`}
+              onTransitionEnd={handleFadeEnd}
+            >
               <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
               <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
               <ProjectCard title="Project Title" description="Project Description" layout="vertical" />

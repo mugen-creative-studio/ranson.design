@@ -46,6 +46,15 @@
   color: #999;
 }
 
+.projectGridWrapper {
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.projectGridFading {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
 @media (max-width: 1023px) {
   .layout {
     grid-template-columns: 1fr;
