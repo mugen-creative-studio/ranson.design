@@ -16,7 +16,7 @@
   height: calc(100% - 2px);
   background: var(--color-text);
   border-radius: var(--radius-round);
-  transition: transform 300ms ease;
+  transition: transform 300ms ease, width 300ms ease;
   pointer-events: none;
 }
 
