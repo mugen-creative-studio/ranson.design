@@ -1,0 +1,35 @@
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-round);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  transition: background 200ms ease;
+}
+
+.item:hover:not(.selected) {
+  background: var(--color-bg-component);
+}
+
+.selected {
+  cursor: default;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-size: var(--font-size-button-sm);
+  line-height: var(--line-height-button-sm);
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  color: var(--color-text);
+}
+
+.selected .label {
+  color: var(--color-gray-50);
+}
