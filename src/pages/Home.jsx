@@ -14,7 +14,7 @@ export default function Home() {
   const active = useActiveSection()
   const { hash } = useLocation()
   const navigateTo = useSectionSnap()
-  const [projectCategory, setProjectCategory] = useState('professional')
+  const [projectCategory, setProjectCategory] = useState('prof')
   const [fading, setFading] = useState(false)
   const pendingCategory = useRef(null)
 
@@ -57,7 +57,7 @@ export default function Home() {
         <section id="projects" className={styles.section}>
           <div className={styles.projectsContent}>
             <ProjectsHeader />
-            <SecNav selection={projectCategory} onSelect={handleCategoryChange} />
+            <SecNav defaultSelection={projectCategory} onChange={handleCategoryChange} />
             <div
               className={`${styles.projectGrid} ${styles.projectGridWrapper} ${fading ? styles.projectGridFading : ''}`}
               onTransitionEnd={handleFadeEnd}

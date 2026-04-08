@@ -7,18 +7,13 @@
   background: none;
   border: none;
   cursor: pointer;
-  position: relative;
-  z-index: 1;
   white-space: nowrap;
+  flex: 1;
   transition: background 200ms ease;
 }
 
-.item:hover:not(.selected) {
+.item:hover {
   background: var(--color-bg-component);
-}
-
-.selected {
-  cursor: default;
 }
 
 .label {
@@ -30,6 +25,6 @@
   color: var(--color-text);
 }
 
-.selected .label {
+.invertLabel {
   color: var(--color-gray-50);
 }
