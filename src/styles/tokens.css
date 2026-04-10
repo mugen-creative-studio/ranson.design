@@ -103,6 +103,14 @@
   --font-size-button-sm: 16px;
   --line-height-button-sm: 16px;
 
+  /* breakpoints (min-width, mobile-first) */
+  --bp-xs: 375px;
+  --bp-sm: 576px;
+  --bp-md: 768px;
+  --bp-lg: 992px;
+  --bp-xl: 1200px;
+  --bp-xxl: 1440px;
+
   /* layout */
   --nav-width: 148px;
   --content-max-width: 898px;

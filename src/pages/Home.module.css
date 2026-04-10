@@ -55,7 +55,8 @@
   transform: translateY(4px);
 }
 
-@media (max-width: 1023px) {
+/* below --bp-lg */
+@media (max-width: 991px) {
   .layout {
     grid-template-columns: 1fr;
     padding: 0 var(--space-40);

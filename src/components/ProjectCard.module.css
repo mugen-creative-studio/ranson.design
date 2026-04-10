@@ -6,121 +6,148 @@
   box-shadow: var(--shadow-card);
   overflow: hidden;
   cursor: pointer;
-}
-
-/* --- Vertical layout --- */
-
-.vertical {
+  /* vertical xs — base (mobile portrait) */
+  width: 310px;
   height: 348px;
-  flex: 1 1 calc(50% - var(--space-16));
-  max-width: calc(50% - var(--space-8));
-  min-width: 0;
 }
 
-.vertical .imageArea {
+.imageArea {
   position: absolute;
-  top: 0;
+  inset: 0;
+}
+
+.content {
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-}
-
-.vertical .content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   height: 100%;
-  background: white;
+  background: var(--color-white);
   overflow: hidden;
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.vertical:hover .content {
+.card.revealed .content,
+.card:hover .content {
   height: 128px;
 }
 
-.vertical .title {
+.title,
+.description {
   position: absolute;
+  color: black;
+  white-space: nowrap;
+  font-family: var(--font-family);
+  font-weight: 400;
+}
+
+.title {
+  font-size: 26px;
+  line-height: 48px;
+  letter-spacing: -0.26px;
   left: 16px;
   top: 5px;
 }
 
-.vertical .description {
-  position: absolute;
+.description {
+  font-size: 16px;
+  line-height: 32px;
+  letter-spacing: 0.16px;
   left: 16px;
   top: 53px;
 }
 
-.verticalLg .title {
-  left: 24px;
-  top: 13px;
+/* SM 576 – (LG − 1) 991: horizontal (MD, SM, mobile landscape) */
+@media (min-width: 576px) and (max-width: 991px) {
+  .card {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    max-width: 720px;
+    height: 348px;
+    gap: 1px;
+  }
+
+  .imageArea {
+    position: relative;
+    inset: auto;
+    flex: 1 0 0;
+    min-width: 0;
+  }
+
+  .content {
+    position: relative;
+    inset: auto;
+    flex: 1 0 0;
+    min-width: 0;
+    height: auto;
+    transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card.revealed .content,
+  .card:hover .content {
+    flex: 0 0 240px;
+    height: auto;
+  }
+
+  .title {
+    left: 24px;
+    top: 16px;
+  }
+
+  .description {
+    left: 24px;
+    top: 64px;
+  }
 }
 
-.verticalLg .description {
-  left: 24px;
-  top: 61px;
+/* LG 992 – (XL − 1) 1199: vertical Large (428 wide) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .card {
+    width: 428px;
+  }
+
+  .title {
+    left: 24px;
+    top: 13px;
+  }
+
+  .description {
+    left: 24px;
+    top: 61px;
+  }
 }
 
-/* --- Horizontal layout --- */
+/* XL 1200 – (XXL − 1) 1439: vertical xs (310 wide) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .card {
+    width: 310px;
+  }
 
-.horizontal {
-  display: flex;
-  height: 348px;
-  width: 100%;
+  .title {
+    left: 16px;
+    top: 5px;
+  }
+
+  .description {
+    left: 16px;
+    top: 53px;
+  }
 }
 
-.horizontal .imageArea {
-  flex: 1 0 0;
-  min-width: 0;
-  transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* XXL 1440+: vertical small (348 wide) */
+@media (min-width: 1440px) {
+  .card {
+    width: 348px;
+  }
 
-.horizontal .content {
-  flex: 1 0 0;
-  min-width: 0;
-  position: relative;
-  background: white;
-  overflow: hidden;
-  transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  .title {
+    left: 16px;
+    top: 5px;
+  }
 
-.horizontal:hover .imageArea {
-  flex: 3 0 0;
-}
-
-.horizontal:hover .content {
-  flex: 1 0 0;
-}
-
-.horizontal .title {
-  position: absolute;
-  left: 24px;
-  top: 16px;
-}
-
-.horizontal .description {
-  position: absolute;
-  left: 24px;
-  top: 64px;
-}
-
-/* --- Shared typography --- */
-
-.title {
-  font-size: 26px;
-  font-weight: 400;
-  line-height: 48px;
-  letter-spacing: -0.26px;
-  white-space: nowrap;
-  color: black;
-}
-
-.description {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 32px;
-  letter-spacing: 0.16px;
-  white-space: nowrap;
-  color: black;
+  .description {
+    left: 16px;
+    top: 53px;
+  }
 }

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router'
 import useActiveSection from '../hooks/useActiveSection.js'
 import useSectionSnap from '../hooks/useSectionSnap.js'
 import LeftNav from '../components/LeftNav.jsx'
+import FloorNav from '../components/FloorNav.jsx'
 import HeroSection from '../components/HeroSection.jsx'
 import ProjectsHeader from '../components/ProjectsHeader.jsx'
 import SecNav from '../components/SecNav.jsx'
@@ -62,9 +63,9 @@ export default function Home() {
               className={`${styles.projectGrid} ${styles.projectGridWrapper} ${fading ? styles.projectGridFading : ''}`}
               onTransitionEnd={handleFadeEnd}
             >
-              <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
-              <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
-              <ProjectCard title="Project Title" description="Project Description" layout="vertical" />
+              <ProjectCard title="Project Title" description="Project Description" />
+              <ProjectCard title="Project Title" description="Project Description" />
+              <ProjectCard title="Project Title" description="Project Description" />
             </div>
           </div>
         </section>
@@ -74,6 +75,7 @@ export default function Home() {
         <section id="contact" className={`${styles.section} ${styles.placeholder}`}>Contact</section>
       </main>
       <div className={styles.rightColumn} />
+      <FloorNav active={active} onNavigate={scrollTo} />
     </div>
   )
 }

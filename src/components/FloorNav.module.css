@@ -1,0 +1,24 @@
+.nav {
+  display: none;
+  position: fixed;
+  bottom: var(--space-32);
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-4);
+  border: 1px solid var(--color-bdr-bound);
+  border-radius: var(--radius-round);
+  background: rgba(199, 199, 199, 0.36);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05), 8px 8px 16px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+/* Tablet only: SM (576) through MD (<LG 992) */
+@media (min-width: 576px) and (max-width: 991px) {
+  .nav {
+    display: flex;
+  }
+}

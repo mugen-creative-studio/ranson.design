@@ -10,7 +10,8 @@
   gap: var(--space-32);
 }
 
-@media (max-width: 1023px) {
+/* below --bp-lg */
+@media (max-width: 991px) {
   .nav {
     display: none;
   }
