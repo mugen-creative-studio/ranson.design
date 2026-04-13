@@ -6,9 +6,9 @@
   box-shadow: var(--shadow-card);
   overflow: hidden;
   cursor: pointer;
-  /* vertical xs — base (mobile portrait) */
-  width: 310px;
-  height: 348px;
+  width: 100%;
+  max-width: 348px;
+  aspect-ratio: 310 / 348;
 }
 
 .imageArea {
@@ -27,9 +27,14 @@
   transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.card.revealed .content,
-.card:hover .content {
+.card.revealed .content {
   height: 128px;
+}
+
+@media (max-width: 991px) {
+  .card:hover .content {
+    height: 128px;
+  }
 }
 
 .title,
@@ -57,7 +62,7 @@
   top: 53px;
 }
 
-/* SM 576 – (LG − 1) 991: horizontal (MD, SM, mobile landscape) */
+/* Tablet (576 – 991): horizontal layout */
 @media (min-width: 576px) and (max-width: 991px) {
   .card {
     display: flex;
@@ -101,53 +106,10 @@
   }
 }
 
-/* LG 992 – (XL − 1) 1199: vertical Large (428 wide) */
-@media (min-width: 992px) and (max-width: 1199px) {
+/* Desktop (992+): vertical cards, 2-up fluid grid */
+@media (min-width: 992px) {
   .card {
-    width: 428px;
-  }
-
-  .title {
-    left: 24px;
-    top: 13px;
-  }
-
-  .description {
-    left: 24px;
-    top: 61px;
-  }
-}
-
-/* XL 1200 – (XXL − 1) 1439: vertical xs (310 wide) */
-@media (min-width: 1200px) and (max-width: 1439px) {
-  .card {
-    width: 310px;
-  }
-
-  .title {
-    left: 16px;
-    top: 5px;
-  }
-
-  .description {
-    left: 16px;
-    top: 53px;
-  }
-}
-
-/* XXL 1440+: vertical small (348 wide) */
-@media (min-width: 1440px) {
-  .card {
-    width: 348px;
-  }
-
-  .title {
-    left: 16px;
-    top: 5px;
-  }
-
-  .description {
-    left: 16px;
-    top: 53px;
+    width: calc((100% - var(--space-16)) / 2);
+    max-width: 420px;
   }
 }
