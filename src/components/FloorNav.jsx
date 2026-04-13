@@ -1,15 +1,13 @@
 import { useRef, useCallback } from 'react'
 import { MonitorUp, Sticker, Component, SmartphoneNfc } from 'lucide-react'
-import FloorNavItem from './FloorNavItem'
+import NavItem from './NavItem'
 import styles from './FloorNav.module.css'
 
-const ICON_PROPS = { size: 22, strokeWidth: 1.5 }
-
 const NAV_ITEMS = [
-  { id: 'hero', label: 'Home', icon: <MonitorUp {...ICON_PROPS} /> },
-  { id: 'projects', label: 'Work', icon: <Component {...ICON_PROPS} /> },
-  { id: 'about', label: 'About', icon: <Sticker {...ICON_PROPS} /> },
-  { id: 'contact', label: 'Contact', icon: <SmartphoneNfc {...ICON_PROPS} /> },
+  { id: 'hero', label: 'Home', icon: MonitorUp },
+  { id: 'projects', label: 'Work', icon: Component },
+  { id: 'about', label: 'About', icon: Sticker },
+  { id: 'contact', label: 'Contact', icon: SmartphoneNfc },
 ]
 
 export default function FloorNav({ active, onNavigate }) {
@@ -24,11 +22,13 @@ export default function FloorNav({ active, onNavigate }) {
   return (
     <nav className={styles.nav} aria-label="Section navigation">
       {NAV_ITEMS.map(({ id, label, icon }) => (
-        <FloorNavItem
+        <NavItem
           key={id}
           icon={icon}
           label={label}
           isActive={active === id}
+          sectionId={id}
+          clickTargetRef={clickTargetRef}
           onClick={() => handleClick(id)}
         />
       ))}
