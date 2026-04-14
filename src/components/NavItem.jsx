@@ -10,9 +10,16 @@ export default function NavItem({ icon: Icon, label, isActive, clickTargetRef, s
   const [labelWidth, setLabelWidth] = useState(0)
 
   useEffect(() => {
-    if (measurerRef.current) {
-      setLabelWidth(measurerRef.current.scrollWidth)
+    const el = measurerRef.current
+    if (!el) return
+    const update = () => {
+      const w = el.scrollWidth
+      if (w > 0) setLabelWidth(w)
     }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
   }, [label])
 
   const initializedRef = useRef(false)
