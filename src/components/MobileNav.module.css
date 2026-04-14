@@ -1,0 +1,213 @@
+/* ── MobileNav: gooey metaball nav, opens from bottom-right ── */
+
+.nav {
+  display: none;
+  position: fixed;
+  right: var(--space-16);
+  bottom: var(--space-16);
+  width: 160px;
+  height: 316px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* Interactive children re-enable pointer-events */
+.nav > * {
+  pointer-events: auto;
+}
+
+/* Mobile only: below SM breakpoint */
+@media (max-width: 575px) {
+  .nav {
+    display: block;
+  }
+}
+
+/* ── Closed button ── */
+.closedButton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 58px;
+  height: 58px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: var(--radius-round);
+  background-color: rgba(88, 88, 88, 0.36);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    2px 2px 6px 0 rgba(0, 0, 0, 0.05),
+    8px 8px 16px 0 rgba(0, 0, 0, 0.05);
+  color: var(--color-gray-50);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  opacity: 1;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.12, 1);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 2;
+}
+
+/* Inner 50x50 highlight — darker solid disk inside the outer ring */
+.closedButton::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: var(--radius-round);
+  background: rgba(88, 88, 88, 0.7);
+  pointer-events: none;
+}
+
+/* Icon sits above the ::before highlight */
+.closedButton > svg {
+  position: relative;
+  z-index: 1;
+}
+
+.nav.open .closedButton {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Organism (full nav): anchored to bottom-right, extends up and left ── */
+.organism {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 160px;
+  height: 316px;
+  opacity: 0;
+  pointer-events: none;
+  /* Top clip fully hides when closed. Negative side/bottom insets leave
+     room for goo-filter blur overflow (~16px). */
+  clip-path: inset(316px -30px -30px -30px);
+  transition:
+    clip-path 400ms cubic-bezier(0.4, 0, 0.12, 1),
+    opacity 200ms cubic-bezier(0.4, 0, 0.12, 1);
+}
+
+.nav.open .organism {
+  opacity: 1;
+  pointer-events: auto;
+  clip-path: inset(-30px -30px -30px -30px);
+}
+
+/* ── Goo layer: blobs + SVG filter ── */
+.gooLayer {
+  position: absolute;
+  left: -30px;
+  top: -30px;
+  right: -30px;
+  bottom: -30px;
+  filter: url(#gooey-mobile);
+  opacity: 1;
+  pointer-events: none;
+  will-change: filter;
+  transform: translateZ(0);
+}
+
+.blob {
+  position: absolute;
+  border-radius: var(--radius-round);
+  background: rgb(190, 190, 190);
+  transition: none;
+}
+
+.blobBar {
+  width: 58px;
+  height: 316px;
+}
+
+.blobActive {
+  height: 58px;
+}
+
+/* ── Glow: follows traveling sphere ── */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  box-shadow:
+    0 0 20px 4px rgba(255, 255, 255, 0.10),
+    0 0 40px 10px rgba(255, 255, 255, 0.05);
+}
+
+/* ── Content layer ── */
+.contentLayer {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Nav buttons ── */
+.navItem {
+  position: absolute;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 0 15px;
+  border-radius: var(--radius-round);
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  color: rgba(247, 248, 249, 0.55);
+  font-family: var(--font-family);
+  -webkit-tap-highlight-color: transparent;
+  transition: none;
+}
+
+.navItem.active {
+  color: var(--color-gray-50);
+  background: rgba(74, 73, 73, 0.50);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* ── Label ── */
+.label {
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-button);
+  line-height: var(--line-height-button);
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
+  max-width: 0;
+  transition: none;
+}
+
+/* ── Icon ── */
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+/* ── Hidden measurer ── */
+.measurer {
+  position: absolute;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-button);
+  line-height: var(--line-height-button);
+}

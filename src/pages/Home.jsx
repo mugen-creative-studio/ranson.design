@@ -4,6 +4,7 @@ import useActiveSection from '../hooks/useActiveSection.js'
 import useSectionSnap from '../hooks/useSectionSnap.js'
 import LeftNav from '../components/LeftNav.jsx'
 import FloorNav from '../components/FloorNav.jsx'
+import MobileNav from '../components/MobileNav.jsx'
 import HeroSection from '../components/HeroSection.jsx'
 import ProjectsHeader from '../components/ProjectsHeader.jsx'
 import SecNav from '../components/SecNav.jsx'
@@ -76,6 +77,7 @@ export default function Home() {
       </main>
       <div className={styles.rightColumn} />
       <FloorNav active={active} onNavigate={scrollTo} />
+      <MobileNav active={active} onNavigate={scrollTo} />
     </div>
   )
 }
