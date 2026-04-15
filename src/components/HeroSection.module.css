@@ -38,3 +38,31 @@
   line-height: 48px;
   letter-spacing: -0.26px;
 }
+
+/* below --bp-lg: apply Figma hero specs (205:4223) from LG down to XS */
+@media (max-width: 991px) {
+  .intro {
+    font-size: 26px;
+    line-height: 48px;
+    letter-spacing: -0.26px;
+  }
+
+  .name {
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 52px;
+    letter-spacing: 0;
+  }
+
+  .tagline {
+    font-size: 26px;
+    line-height: 48px;
+    letter-spacing: -0.26px;
+  }
+
+  .current {
+    font-size: 16px;
+    line-height: 32px;
+    letter-spacing: 0.16px;
+  }
+}

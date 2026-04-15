@@ -7,8 +7,7 @@
   overflow: hidden;
   cursor: pointer;
   width: 100%;
-  max-width: 348px;
-  aspect-ratio: 310 / 348;
+  height: 348px;
 }
 
 .imageArea {
@@ -68,7 +67,6 @@
     display: flex;
     align-items: stretch;
     width: 100%;
-    max-width: 720px;
     height: 348px;
     gap: 1px;
   }
@@ -111,5 +109,7 @@
   .card {
     width: calc((100% - var(--space-16)) / 2);
     max-width: 420px;
+    height: auto;
+    aspect-ratio: 310 / 348;
   }
 }

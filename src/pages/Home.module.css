@@ -25,7 +25,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
+@media (max-width: 991px) {
+  .section {
+    scroll-snap-align: start;
+  }
+
+  /* Non-hero sections: top whitespace before content; align content to top */
+  .section:not(:first-child) {
+    align-items: flex-start;
+    padding-top: 12vh;
+  }
 }
 
 .projectsContent {
@@ -69,5 +80,17 @@
   .leftColumn,
   .rightColumn {
     display: none;
+  }
+}
+
+/* below --bp-sm */
+@media (max-width: 575px) {
+  .layout {
+    padding: 0 var(--space-16);
+  }
+
+  .main {
+    padding-left: 0;
+    padding-right: 0;
   }
 }

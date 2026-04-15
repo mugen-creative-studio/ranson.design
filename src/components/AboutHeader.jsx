@@ -2,7 +2,7 @@ import styles from './AboutHeader.module.css'
 
 export default function AboutHeader() {
   return (
-    <div className={styles.header}>
+    <div className={styles.header} data-snap-center>
       <h2 className={styles.title}>About me</h2>
       <p className={styles.description}>
         As a Designer, I deliberately immerse myself in complex problems,

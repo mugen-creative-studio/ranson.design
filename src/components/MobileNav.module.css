@@ -23,8 +23,8 @@
   }
 }
 
-/* ── Closed button ── */
-.closedButton {
+/* ── Closed-state icon overlay (sits over the pill-shaped blob) ── */
+.closedTrigger {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -33,67 +33,38 @@
   -webkit-appearance: none;
   appearance: none;
   border: none;
-  border-radius: var(--radius-round);
-  background-color: rgba(88, 88, 88, 0.36);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  box-shadow:
-    2px 2px 6px 0 rgba(0, 0, 0, 0.05),
-    8px 8px 16px 0 rgba(0, 0, 0, 0.05);
+  background: transparent;
   color: var(--color-gray-50);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
   opacity: 1;
-  transition: opacity 200ms cubic-bezier(0.4, 0, 0.12, 1);
+  /* Closing: fade back in once the bar has retracted to pill shape */
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.12, 1) 450ms;
   -webkit-tap-highlight-color: transparent;
-  z-index: 2;
+  z-index: 3;
 }
 
-/* Inner 50x50 highlight — darker solid disk inside the outer ring */
-.closedButton::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: var(--radius-round);
-  background: rgba(88, 88, 88, 0.7);
-  pointer-events: none;
-}
-
-/* Icon sits above the ::before highlight */
-.closedButton > svg {
-  position: relative;
-  z-index: 1;
-}
-
-.nav.open .closedButton {
+.nav.open .closedTrigger {
   opacity: 0;
   pointer-events: none;
+  /* Opening: fade out immediately */
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.12, 1);
 }
 
-/* ── Organism (full nav): anchored to bottom-right, extends up and left ── */
+/* ── Organism (always rendered; bar blob itself handles closed pill) ── */
 .organism {
   position: absolute;
   bottom: 0;
   right: 0;
   width: 160px;
   height: 316px;
-  opacity: 0;
   pointer-events: none;
-  /* Top clip fully hides when closed. Negative side/bottom insets leave
-     room for goo-filter blur overflow (~16px). */
-  clip-path: inset(316px -30px -30px -30px);
-  transition:
-    clip-path 400ms cubic-bezier(0.4, 0, 0.12, 1),
-    opacity 200ms cubic-bezier(0.4, 0, 0.12, 1);
 }
 
 .nav.open .organism {
-  opacity: 1;
   pointer-events: auto;
-  clip-path: inset(-30px -30px -30px -30px);
 }
 
 /* ── Goo layer: blobs + SVG filter ── */
@@ -117,13 +88,45 @@
   transition: none;
 }
 
+/* Bar blob: acts as the closed pill AND the open bar; CSS drives the morph */
 .blobBar {
   width: 58px;
+  left: 132px;
+  will-change: height, top;
+  transition: height 600ms cubic-bezier(0.33, 1, 0.68, 1),
+              top 600ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.nav:not(.open) .blobBar {
+  height: 58px;
+  top: 288px;
+}
+
+.nav.open .blobBar {
   height: 316px;
+  top: 30px;
 }
 
 .blobActive {
   height: 58px;
+  /* Close direction: fade out quickly */
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.12, 1);
+}
+
+.nav:not(.open) .blobActive {
+  opacity: 0;
+}
+
+.nav.open .blobActive {
+  /* Open direction: begin fade as bar is nearing the item; overlap smooths the reveal */
+  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1) 440ms;
+}
+
+/* Hide nav button content + glow when closed so only the pill is visible */
+.nav:not(.open) .contentLayer,
+.nav:not(.open) .glow {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ── Glow: follows traveling sphere ── */
@@ -147,6 +150,13 @@
 .contentLayer {
   position: absolute;
   inset: 0;
+  /* Closing direction: fade out fast at the start */
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.12, 1);
+}
+
+.nav.open .contentLayer {
+  /* Opening direction: overlap the tail of the bar animation */
+  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1) 440ms;
 }
 
 /* ── Nav buttons ── */

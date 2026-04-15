@@ -19,16 +19,23 @@ export default function useSectionSnap() {
     el.scrollIntoView({ behavior: 'smooth' })
 
     // Wait for scroll to finish, then release lock
+    let lastY = window.scrollY
+    let stableFrames = 0
     const checkDone = () => {
-      const rect = el.getBoundingClientRect()
-      if (Math.abs(rect.top) < 2) {
-        // Small cooldown to prevent immediately triggering another snap
-        cooldown.current = true
-        isAnimating.current = false
-        setTimeout(() => { cooldown.current = false }, 300)
+      const y = window.scrollY
+      if (Math.abs(y - lastY) < 1) {
+        stableFrames++
+        if (stableFrames >= 3) {
+          cooldown.current = true
+          isAnimating.current = false
+          setTimeout(() => { cooldown.current = false }, 300)
+          return
+        }
       } else {
-        requestAnimationFrame(checkDone)
+        stableFrames = 0
       }
+      lastY = y
+      requestAnimationFrame(checkDone)
     }
     requestAnimationFrame(checkDone)
   }, [])

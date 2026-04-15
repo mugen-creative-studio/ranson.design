@@ -2,7 +2,7 @@ import styles from './HeroSection.module.css'
 
 export default function HeroSection() {
   return (
-    <div className={styles.hero}>
+    <div className={styles.hero} data-snap-center>
       <div className={styles.headline}>
         <p className={styles.intro}>Hi, my name is</p>
         <h1 className={styles.name}>Ranson Vorpahl</h1>

@@ -103,11 +103,12 @@ export default function MobileNav({ active, onNavigate }) {
   const closeTimerRef = useRef(null)
   const scrubbingRef = useRef(false)
   const scrubStartYRef = useRef(0)
+  const startedClosedRef = useRef(false)
   const hoveredIdxRef = useRef(null)
   const dwellTimerRef = useRef(null)
   const blobStateRef = useRef(null)
 
-  const CLOSE_DELAY = 5000
+  const CLOSE_DELAY = 2500
   const SCRUB_THRESHOLD_PX = 6
 
   /* Measure label widths for button sizing */
@@ -175,16 +176,11 @@ export default function MobileNav({ active, onNavigate }) {
     const idx = NAV_ITEMS.findIndex(n => n.id === pageId)
     const aW  = ACTIVE_W[pageId]
 
-    // Bar: anchored, set once
-    if (barBlobRef.current) {
-      barBlobRef.current.style.left = BAR_LEFT + 'px'
-      barBlobRef.current.style.top  = GPAD + 'px'
-    }
+    // Bar blob is now driven by CSS (.nav.open .blobBar) — no imperative positioning.
 
-    // Active blob
+    // Active blob — geometry set inline; CSS handles opacity transition
     const blob = activeBlobRef.current
     if (blob) {
-      blob.style.transition = 'none'
       blob.style.left   = pillLeft(aW) + 'px'
       blob.style.top    = pillTop(idx) + 'px'
       blob.style.width  = aW + 'px'
@@ -446,29 +442,33 @@ export default function MobileNav({ active, onNavigate }) {
       scrubStartYRef.current = e.touches[0].clientY
       cancelCloseTimer()
       clearDwell()
-      if (!isOpen) {
-        // Prevent any default (iOS sometimes synthesizes a delayed click)
-        openNav()
-      }
+      // If this touch is the one that opens the nav, don't treat later moves
+      // in the same gesture as a scrub — jitter near the closed button can
+      // otherwise read as "thumb at bottom of bar → scroll to contact".
+      startedClosedRef.current = !isOpen
+      if (!isOpen) openNav()
     }
 
     const onTouchMove = (e) => {
+      if (startedClosedRef.current) return
       const touch = e.touches[0]
       const delta = Math.abs(touch.clientY - scrubStartYRef.current)
       if (!scrubbingRef.current && delta < SCRUB_THRESHOLD_PX) return
 
       const rect = organismRef.current?.getBoundingClientRect()
       if (!rect) return
-      const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
-      const idx = idxFromY(centerY)
 
       e.preventDefault()
 
-      // If pill is already expanded and finger is still over the same
-      // section, ignore iOS touch jitter — keep the pill steady.
-      if (blobStateRef.current === 'pill' && idx === hoveredIdxRef.current) {
-        return
-      }
+      // Thumb Y on nav → linear scroll of whole page.
+      const t = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height))
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      window.scrollTo(0, t * maxScroll)
+
+      const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
+      const idx = idxFromY(centerY)
+
+      if (blobStateRef.current === 'pill' && idx === hoveredIdxRef.current) return
 
       if (!scrubbingRef.current) {
         scrubbingRef.current = true
@@ -476,7 +476,6 @@ export default function MobileNav({ active, onNavigate }) {
         clearAllActive()
         collapseToSphere(centerY)
       } else if (blobStateRef.current === 'pill') {
-        // Thumb crossed into a new section — collapse back to sphere
         clearAllActive()
         collapseToSphere(centerY)
       } else {
@@ -489,6 +488,13 @@ export default function MobileNav({ active, onNavigate }) {
 
     const onTouchEnd = () => {
       clearDwell()
+      if (startedClosedRef.current) {
+        // Keep the flag set briefly so the synthesized click that iOS fires
+        // after touchend can't hit a nav item that just slid into the touch spot.
+        setTimeout(() => { startedClosedRef.current = false }, 350)
+        scheduleClose()
+        return
+      }
       if (!scrubbingRef.current) {
         scheduleClose()
         return
@@ -531,6 +537,10 @@ export default function MobileNav({ active, onNavigate }) {
       justScrubbedRef.current = false
       return
     }
+    // Ignore the synthesized click that iOS fires immediately after the
+    // tap-to-open gesture — it can otherwise land on the nav item that
+    // slid into the tap location (e.g. Contact at bottom-right).
+    if (startedClosedRef.current) return
     const wasActive = id === currentPageRef.current
     if (wasActive) {
       closeNav()
@@ -555,7 +565,7 @@ export default function MobileNav({ active, onNavigate }) {
 
       <button
         type="button"
-        className={styles.closedButton}
+        className={styles.closedTrigger}
         onClick={openNav}
         aria-label="Open navigation"
         aria-expanded={isOpen}
