@@ -120,6 +120,7 @@ export default function MobileNav({ active, onNavigate }) {
   const [chromeRevealed, setChromeRevealed] = useState(false)
   const activeChromeRef = useRef(active)
   activeChromeRef.current = active
+  const wasNavOpenRef = useRef(false)
 
   useEffect(() => {
     const widths = {}
@@ -189,6 +190,17 @@ export default function MobileNav({ active, onNavigate }) {
     return () => cancelAnimationFrame(raf)
   }, [isOpen])
 
+  /* Inline width/height/left/top from animateTo/setStateImmediate override CSS; on close, clear so .nav:not(.open) .blobActive { opacity:0 } wins. */
+  useLayoutEffect(() => {
+    if (isOpen) return
+    const el = activeBlobRef.current
+    if (!el) return
+    el.style.transition = 'none'
+    for (const p of ['opacity', 'width', 'height', 'left', 'top']) {
+      el.style.removeProperty(p)
+    }
+  }, [isOpen])
+
   /* ── Position helpers ──────────────────────────── */
   const positionGlow = useCallback((idx, show) => {
     const el = glowRef.current
@@ -253,6 +265,16 @@ export default function MobileNav({ active, onNavigate }) {
 
     positionButtons(idx, aW)
   }, [positionButtons])
+
+  /* Close path strips blob inline geometry; active sync skips setStateImmediate when active === currentPageRef — restore pill blob layout on open only. */
+  useLayoutEffect(() => {
+    const justOpened = !wasNavOpenRef.current && isOpen
+    wasNavOpenRef.current = isOpen
+    if (!isOpen || !justOpened) return
+    const pageId = NAV_ITEMS.find(n => n.id === active)?.id
+    if (!pageId) return
+    setStateImmediate(pageId)
+  }, [isOpen, active, setStateImmediate])
 
   /* ── Animated transition ───────────────────── */
   const animateTo = useCallback((pageId) => {
