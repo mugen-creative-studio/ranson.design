@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback, useState } from 'react'
+import { useRef, useEffect, useLayoutEffect, useCallback, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { MonitorUp, Component, Sticker, SmartphoneNfc } from 'lucide-react'
 import styles from './MobileNav.module.css'
@@ -32,6 +32,8 @@ const T_COLLAPSE = 200
 const T_MOVE     = 300
 const T_EXPAND   = 240
 const EASE       = 'cubic-bezier(0.4, 0, 0.12, 1)'
+/** Must match `.blobBar` transition in MobileNav.module.css (bar growing to full height). */
+const T_BAR_OPEN_MS = 600
 
 /* ── Helpers ────────────────────────────────────────── */
 const pillTop        = (idx) => ITEM_Y[idx] - CP + GPAD
@@ -114,6 +116,10 @@ export default function MobileNav({ active, onNavigate }) {
   /* Measure label widths for button sizing */
   const measurerRefs = useRef([])
   const [labelWidths, setLabelWidths] = useState({})
+  /** True once the bar blob overlaps the active row — then show active pill + labels (organic grow). */
+  const [chromeRevealed, setChromeRevealed] = useState(false)
+  const activeChromeRef = useRef(active)
+  activeChromeRef.current = active
 
   useEffect(() => {
     const widths = {}
@@ -124,6 +130,64 @@ export default function MobileNav({ active, onNavigate }) {
     })
     setLabelWidths(widths)
   }, [])
+
+  /* Reveal active pill + chrome when measured bar overlaps the active item row (not a fixed delay). */
+  useLayoutEffect(() => {
+    if (!isOpen) {
+      setChromeRevealed(false)
+      return
+    }
+
+    if (
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      setChromeRevealed(true)
+      return
+    }
+
+    setChromeRevealed(false)
+
+    const minOverlapPx = 10
+    const t0 = performance.now()
+    const maxMs = T_BAR_OPEN_MS + 100
+
+    let raf = 0
+    const tick = () => {
+      const idx = NAV_ITEMS.findIndex(n => n.id === activeChromeRef.current)
+      const rowTop = idx >= 0 ? ITEM_Y[idx] : 0
+      const rowBottom = idx >= 0 ? rowTop + IH : 0
+
+      const bar = barBlobRef.current
+      const org = organismRef.current
+      if (!bar || !org) {
+        setChromeRevealed(true)
+        return
+      }
+      const br = bar.getBoundingClientRect()
+      const or = org.getBoundingClientRect()
+      const barTop = br.top - or.top
+      const barBottom = br.bottom - or.top
+
+      const elapsed = performance.now() - t0
+      if (idx < 0) {
+        if (elapsed >= maxMs) setChromeRevealed(true)
+        else raf = requestAnimationFrame(tick)
+        return
+      }
+
+      const overlap = Math.min(barBottom, rowBottom) - Math.max(barTop, rowTop)
+
+      if (overlap >= minOverlapPx || elapsed >= maxMs) {
+        setChromeRevealed(true)
+        return
+      }
+      raf = requestAnimationFrame(tick)
+    }
+
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [isOpen])
 
   /* ── Position helpers ──────────────────────────── */
   const positionGlow = useCallback((idx, show) => {
@@ -558,7 +622,8 @@ export default function MobileNav({ active, onNavigate }) {
   const tree = (
     <nav
       ref={navRef}
-      className={`${styles.nav} ${isOpen ? styles.open : ''}`}
+      className={`${styles.nav} ${isOpen ? styles.open : ''} ${isOpen && chromeRevealed ? styles.revealChrome : ''}`}
+      style={{ '--nav-bar-open-ms': `${T_BAR_OPEN_MS}ms` }}
       aria-label="Mobile navigation"
     >
       <GooeyFilter />

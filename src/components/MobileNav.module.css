@@ -88,13 +88,14 @@
   transition: none;
 }
 
-/* Bar blob: acts as the closed pill AND the open bar; CSS drives the morph */
+/* Bar blob: acts as the closed pill AND the open bar; CSS drives the morph.
+   --nav-bar-open-ms set on <nav> from MobileNav.jsx (must match T_BAR_OPEN_MS). */
 .blobBar {
   width: 58px;
   left: 132px;
   will-change: height, top;
-  transition: height 600ms cubic-bezier(0.33, 1, 0.68, 1),
-              top 600ms cubic-bezier(0.33, 1, 0.68, 1);
+  transition: height var(--nav-bar-open-ms, 600ms) cubic-bezier(0.33, 1, 0.68, 1),
+              top var(--nav-bar-open-ms, 600ms) cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .nav:not(.open) .blobBar {
@@ -117,9 +118,14 @@
   opacity: 0;
 }
 
+/* While bar grows, hide active pill; JS adds .revealChrome when bar overlaps the active row. */
 .nav.open .blobActive {
-  /* Open direction: begin fade as bar is nearing the item; overlap smooths the reveal */
-  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1) 440ms;
+  opacity: 0;
+}
+
+.nav.open.revealChrome .blobActive {
+  opacity: 1;
+  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 /* Hide nav button content + glow when closed so only the pill is visible */
@@ -155,8 +161,17 @@
 }
 
 .nav.open .contentLayer {
-  /* Opening direction: overlap the tail of the bar animation */
-  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1) 440ms;
+  opacity: 0;
+}
+
+.nav.open.revealChrome .contentLayer {
+  opacity: 1;
+  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* No taps on invisible chrome while the bar is still growing */
+.nav.open:not(.revealChrome) .contentLayer {
+  pointer-events: none;
 }
 
 /* ── Nav buttons ── */
