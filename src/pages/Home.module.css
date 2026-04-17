@@ -32,8 +32,9 @@
     scroll-snap-align: start;
   }
 
-  /* Non-hero sections: top whitespace before content; align content to top */
-  .section:not(:first-child) {
+  /* Projects keeps its top-aligned layout with breathing room for the card
+     grid. Hero, About, Contact inherit the centered layout from .section. */
+  .section[id="projects"] {
     align-items: flex-start;
     padding-top: 12vh;
   }
