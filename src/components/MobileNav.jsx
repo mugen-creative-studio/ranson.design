@@ -107,6 +107,7 @@ export default function MobileNav({ active, onNavigate }) {
   const scrubStartYRef = useRef(0)
   const startedClosedRef = useRef(false)
   const hoveredIdxRef = useRef(null)
+  const lastScrubSectionRef = useRef(null)
   const dwellTimerRef = useRef(null)
   const blobStateRef = useRef(null)
 
@@ -528,6 +529,7 @@ export default function MobileNav({ active, onNavigate }) {
       scrubStartYRef.current = e.touches[0].clientY
       cancelCloseTimer()
       clearDwell()
+      lastScrubSectionRef.current = null
       // If this touch is the one that opens the nav, don't treat later moves
       // in the same gesture as a scrub — jitter near the closed button can
       // otherwise read as "thumb at bottom of bar → scroll to contact".
@@ -546,13 +548,16 @@ export default function MobileNav({ active, onNavigate }) {
 
       e.preventDefault()
 
-      // Thumb Y on nav → linear scroll of whole page.
-      const t = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height))
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      window.scrollTo(0, t * maxScroll)
-
       const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
       const idx = idxFromY(centerY)
+
+      // Scrub → discrete section change: fire one onNavigate per row crossing.
+      // useSectionSnap's scrollIntoView smooth-scrolls; the next crossing can
+      // interrupt mid-animation — acceptable per spec (fast scrubs may skip).
+      if (idx !== lastScrubSectionRef.current) {
+        onNavigate(NAV_ITEMS[idx].id)
+        lastScrubSectionRef.current = idx
+      }
 
       if (blobStateRef.current === 'pill' && idx === hoveredIdxRef.current) return
 
@@ -574,6 +579,7 @@ export default function MobileNav({ active, onNavigate }) {
 
     const onTouchEnd = () => {
       clearDwell()
+      lastScrubSectionRef.current = null
       if (startedClosedRef.current) {
         // Keep the flag set briefly so the synthesized click that iOS fires
         // after touchend can't hit a nav item that just slid into the touch spot.
