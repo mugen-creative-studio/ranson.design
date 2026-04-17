@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 
 /* ── Figma geometry ─────────────────────────────────── */
 const BAR_W    = 58
-const BAR_H    = 316
+const BAR_H    = 401
 const CP       = 4
 const IH       = 50
 const ITEM_Y   = [4, 89, 175, 262]

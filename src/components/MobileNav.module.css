@@ -6,7 +6,7 @@
   right: var(--space-16);
   bottom: var(--space-16);
   width: 160px;
-  height: 316px;
+  height: 401px;
   z-index: 100;
   pointer-events: none;
 }
@@ -59,7 +59,7 @@
   bottom: 0;
   right: 0;
   width: 160px;
-  height: 316px;
+  height: 401px;
   pointer-events: none;
 }
 
@@ -100,11 +100,11 @@
 
 .nav:not(.open) .blobBar {
   height: 58px;
-  top: 288px;
+  top: 373px;
 }
 
 .nav.open .blobBar {
-  height: 316px;
+  height: 401px;
   top: 30px;
 }
 
@@ -240,11 +240,10 @@
 /* ── X close button (outside the organism stack) ── */
 .closeButton {
   position: absolute;
-  left: 50%;
-  top: -56px;
-  transform: translateX(-50%);
-  width: 44px;
-  height: 44px;
+  right: 4px;
+  top: 347px;
+  width: 50px;
+  height: 50px;
   -webkit-appearance: none;
   appearance: none;
   border: none;
