@@ -535,6 +535,11 @@ export default function MobileNav({ active, onNavigate }) {
       cancelCloseTimer()
       clearDwell()
       lastScrubSectionRef.current = null
+      // Disable scroll-snap during the gesture. With `y proximity` active,
+      // mobile Safari resists programmatic scrolls during touch and pulls the
+      // viewport back to the starting snap point — the page appears to flash
+      // to the target section then revert to the origin.
+      document.documentElement.style.scrollSnapType = 'none'
       // If this touch is the one that opens the nav, don't treat later moves
       // in the same gesture as a scrub — jitter near the closed button can
       // otherwise read as "thumb at bottom of bar → scroll to contact".
@@ -556,13 +561,16 @@ export default function MobileNav({ active, onNavigate }) {
       const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
       const idx = idxFromY(centerY)
 
-      // Scrub follows thumb one-to-one: INSTANT scroll bypasses
-      // useSectionSnap.navigateTo's isAnimating + cooldown locks. Release
-      // still uses onNavigate (onTouchEnd) for a smooth final settle.
+      // Scrub follows thumb one-to-one: direct window.scrollTo to the
+      // section's offsetTop. scrollIntoView is less reliable during active
+      // touch with scroll-snap — window.scrollTo matches the old code path
+      // that empirically worked. Scroll-snap is disabled in onTouchStart.
+      // Release still uses onNavigate (onTouchEnd) for a smooth final settle.
       if (idx !== lastScrubSectionRef.current) {
-        document
-          .getElementById(NAV_ITEMS[idx].id)
-          ?.scrollIntoView({ behavior: 'auto', block: 'start' })
+        const target = document.getElementById(NAV_ITEMS[idx].id)
+        if (target) {
+          window.scrollTo({ top: target.offsetTop, left: 0, behavior: 'auto' })
+        }
         lastScrubSectionRef.current = idx
       }
 
@@ -587,6 +595,10 @@ export default function MobileNav({ active, onNavigate }) {
     const onTouchEnd = () => {
       clearDwell()
       lastScrubSectionRef.current = null
+      // Restore scroll-snap (disabled in onTouchStart). The final onNavigate
+      // below uses useSectionSnap's smooth scroll, which settles onto the
+      // now-re-enabled snap point.
+      document.documentElement.style.scrollSnapType = ''
       if (startedClosedRef.current) {
         // Keep the flag set briefly so the synthesized click that iOS fires
         // after touchend can't hit a nav item that just slid into the touch spot.
