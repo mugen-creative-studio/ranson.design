@@ -107,7 +107,6 @@ export default function MobileNav({ active, onNavigate }) {
   const scrubStartYRef = useRef(0)
   const startedClosedRef = useRef(false)
   const hoveredIdxRef = useRef(null)
-  const lastScrubSectionRef = useRef(null)
   const dwellTimerRef = useRef(null)
   const blobStateRef = useRef(null)
 
@@ -534,7 +533,6 @@ export default function MobileNav({ active, onNavigate }) {
       scrubStartYRef.current = e.touches[0].clientY
       cancelCloseTimer()
       clearDwell()
-      lastScrubSectionRef.current = null
       // Disable scroll-snap during the gesture. With `y proximity` active,
       // mobile Safari resists programmatic scrolls during touch and pulls the
       // viewport back to the starting snap point — the page appears to flash
@@ -561,17 +559,20 @@ export default function MobileNav({ active, onNavigate }) {
       const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
       const idx = idxFromY(centerY)
 
-      // Scrub follows thumb one-to-one: direct window.scrollTo to the
-      // section's offsetTop. scrollIntoView is less reliable during active
-      // touch with scroll-snap — window.scrollTo matches the old code path
-      // that empirically worked. Scroll-snap is disabled in onTouchStart.
-      // Release still uses onNavigate (onTouchEnd) for a smooth final settle.
-      if (idx !== lastScrubSectionRef.current) {
-        const target = document.getElementById(NAV_ITEMS[idx].id)
-        if (target) {
-          window.scrollTo({ top: target.offsetTop, left: 0, behavior: 'auto' })
-        }
-        lastScrubSectionRef.current = idx
+      // Scrub = continuous follow: map thumb Y within the nav's row range
+      // linearly to the page scroll range between the first and last
+      // section. No discrete section jumps mid-gesture — the page flows
+      // with the thumb. Release snaps to the hovered section (onTouchEnd
+      // calls onNavigate, and scroll-snap is re-enabled there).
+      const firstCenter = ITEM_CENTER_Y[0]
+      const lastCenter = ITEM_CENTER_Y[NAV_ITEMS.length - 1]
+      const navY = touch.clientY - rect.top
+      const t = Math.max(0, Math.min(1, (navY - firstCenter) / (lastCenter - firstCenter)))
+      const firstEl = document.getElementById(NAV_ITEMS[0].id)
+      const lastEl = document.getElementById(NAV_ITEMS[NAV_ITEMS.length - 1].id)
+      if (firstEl && lastEl) {
+        const scrollTop = firstEl.offsetTop + t * (lastEl.offsetTop - firstEl.offsetTop)
+        window.scrollTo({ top: scrollTop, left: 0, behavior: 'auto' })
       }
 
       if (blobStateRef.current === 'pill' && idx === hoveredIdxRef.current) return
@@ -594,7 +595,6 @@ export default function MobileNav({ active, onNavigate }) {
 
     const onTouchEnd = () => {
       clearDwell()
-      lastScrubSectionRef.current = null
       // Restore scroll-snap (disabled in onTouchStart). The final onNavigate
       // below uses useSectionSnap's smooth scroll, which settles onto the
       // now-re-enabled snap point.
