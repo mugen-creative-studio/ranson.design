@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router'
 import useActiveSection from '../hooks/useActiveSection.js'
 import useSectionSnap from '../hooks/useSectionSnap.js'
@@ -19,6 +19,14 @@ export default function Home() {
   const [projectCategory, setProjectCategory] = useState('prof')
   const [fading, setFading] = useState(false)
   const pendingCategory = useRef(null)
+  const [revealedProjectId, setRevealedProjectId] = useState(null)
+
+  const handleProjectCenter = useCallback((id, entering) => {
+    setRevealedProjectId((prev) => {
+      if (entering) return id
+      return prev === id ? null : prev
+    })
+  }, [])
 
   useEffect(() => {
     if (hash) {
@@ -64,9 +72,27 @@ export default function Home() {
               className={`${styles.projectGrid} ${styles.projectGridWrapper} ${fading ? styles.projectGridFading : ''}`}
               onTransitionEnd={handleFadeEnd}
             >
-              <ProjectCard title="Project Title" description="Project Description" />
-              <ProjectCard title="Project Title" description="Project Description" />
-              <ProjectCard title="Project Title" description="Project Description" />
+              <ProjectCard
+                id="p1"
+                title="Project Title"
+                description="Project Description"
+                isRevealed={revealedProjectId === 'p1'}
+                onCenter={handleProjectCenter}
+              />
+              <ProjectCard
+                id="p2"
+                title="Project Title"
+                description="Project Description"
+                isRevealed={revealedProjectId === 'p2'}
+                onCenter={handleProjectCenter}
+              />
+              <ProjectCard
+                id="p3"
+                title="Project Title"
+                description="Project Description"
+                isRevealed={revealedProjectId === 'p3'}
+                onCenter={handleProjectCenter}
+              />
             </div>
           </div>
         </section>

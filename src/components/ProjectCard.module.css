@@ -30,7 +30,10 @@
   height: 128px;
 }
 
-@media (max-width: 991px) {
+/* Hover reveal is desktop/cursor-only; on touch, iOS keeps :hover sticky after
+   tap, which would override the local tap-to-close and leave the card visually
+   unchanged. */
+@media (hover: hover) and (max-width: 991px) {
   .card:hover .content {
     height: 128px;
   }
@@ -87,8 +90,7 @@
     transition: flex 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .card.revealed .content,
-  .card:hover .content {
+  .card.revealed .content {
     flex: 0 0 240px;
     height: auto;
   }
@@ -101,6 +103,14 @@
   .description {
     left: 24px;
     top: 64px;
+  }
+}
+
+/* Hover reveal on tablet — hover-capable devices only (same reason as mobile). */
+@media (hover: hover) and (min-width: 576px) and (max-width: 991px) {
+  .card:hover .content {
+    flex: 0 0 240px;
+    height: auto;
   }
 }
 

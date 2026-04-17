@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './ProjectCard.module.css'
 
-export default function ProjectCard({ title, description, image }) {
+export default function ProjectCard({ id, title, description, image, isRevealed, onCenter }) {
   const cardRef = useRef(null)
-  const [centered, setCentered] = useState(false)
   const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
@@ -16,15 +15,14 @@ export default function ProjectCard({ title, description, image }) {
         observer = null
       }
       if (!mql.matches) {
-        setCentered(false)
+        onCenter?.(id, false)
         return
       }
       const el = cardRef.current
       if (!el) return
       observer = new IntersectionObserver(
         ([entry]) => {
-          setCentered(entry.isIntersecting)
-          if (!entry.isIntersecting) setExpanded(false)
+          onCenter?.(id, entry.isIntersecting)
         },
         { rootMargin: '-50% 0px -50% 0px', threshold: 0 }
       )
@@ -37,15 +35,20 @@ export default function ProjectCard({ title, description, image }) {
       mql.removeEventListener('change', setup)
       if (observer) observer.disconnect()
     }
-  }, [])
+  }, [id, onCenter])
+
+  // Lose the local tap-close state when this card stops being the revealed one.
+  useEffect(() => {
+    if (!isRevealed) setExpanded(false)
+  }, [isRevealed])
 
   function handleClick() {
     if (!window.matchMedia('(max-width: 991px)').matches) return
-    if (!centered) return
+    if (!isRevealed) return
     setExpanded((e) => !e)
   }
 
-  const revealed = centered && !expanded
+  const revealed = isRevealed && !expanded
 
   return (
     <div
