@@ -1,6 +1,6 @@
 import { useRef, useEffect, useLayoutEffect, useCallback, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { MonitorUp, Component, Sticker, SmartphoneNfc } from 'lucide-react'
+import { MonitorUp, Component, Sticker, SmartphoneNfc, X } from 'lucide-react'
 import styles from './MobileNav.module.css'
 
 const NAV_ITEMS = [
@@ -706,6 +706,16 @@ export default function MobileNav({ active, onNavigate }) {
           ))}
         </div>
       </div>
+
+      <button
+        type="button"
+        className={styles.closeButton}
+        onClick={closeNav}
+        aria-label="Close navigation"
+        tabIndex={isOpen ? 0 : -1}
+      >
+        <X size={20} strokeWidth={1.8} />
+      </button>
     </nav>
   )
 
