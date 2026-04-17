@@ -370,6 +370,10 @@ export default function MobileNav({ active, onNavigate }) {
   /* ── Sync with external active prop ──────── */
   useEffect(() => {
     if (!active) return
+    // While the nav is closed the pill/glow chrome is invisible (CSS hides it).
+    // The `justOpened` layoutEffect re-positions everything via setStateImmediate
+    // on the next open, so running animateTo here during scroll is wasted work.
+    if (!isOpen) return
     // During a scrub, the scrub's own state machine (expandAtIdx on dwell,
     // clearAllActive on row crossing) owns the pill state. Observer-driven
     // active updates mid-scroll would otherwise re-expand a row the user
@@ -390,7 +394,7 @@ export default function MobileNav({ active, onNavigate }) {
     } else if (pageId !== currentPageRef.current) {
       animateTo(pageId)
     }
-  }, [active, setStateImmediate, animateTo])
+  }, [active, isOpen, setStateImmediate, animateTo])
 
   /* ── Open/close management ─────────────────── */
   const cancelCloseTimer = useCallback(() => {
