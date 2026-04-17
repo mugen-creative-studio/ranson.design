@@ -552,8 +552,9 @@ export default function MobileNav({ active, onNavigate }) {
       const idx = idxFromY(centerY)
 
       // Scrub → discrete section change: fire one onNavigate per row crossing.
-      // useSectionSnap's scrollIntoView smooth-scrolls; the next crossing can
-      // interrupt mid-animation — acceptable per spec (fast scrubs may skip).
+      // useSectionSnap.navigateTo guards with isAnimating + a 300ms cooldown,
+      // so crossings during a smooth-scroll are dropped (not interrupted).
+      // Acceptable per spec: fast scrubs may skip intermediate sections.
       if (idx !== lastScrubSectionRef.current) {
         onNavigate(NAV_ITEMS[idx].id)
         lastScrubSectionRef.current = idx
