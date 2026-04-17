@@ -279,7 +279,7 @@ export default function MobileNav({ active, onNavigate }) {
 
   /* ── Animated transition ───────────────────── */
   const animateTo = useCallback((pageId) => {
-    if (pageId === currentPageRef.current || animatingRef.current) return
+    if (pageId === currentPageRef.current || animatingRef.current || scrubbingRef.current) return
     animatingRef.current = true
 
     const fromId  = currentPageRef.current
@@ -320,6 +320,7 @@ export default function MobileNav({ active, onNavigate }) {
     glow.style.opacity = '1'
 
     setTimeout(() => {
+      if (scrubbingRef.current) { animatingRef.current = false; return }
       /* ── PHASE 2: MOVE ── */
       setTrans(blob, ['top'], T_MOVE)
       blob.style.top = (ITEM_Y[toIdx] + IH / 2 - COLLAPSED_H / 2 + GPAD) + 'px'
@@ -330,6 +331,7 @@ export default function MobileNav({ active, onNavigate }) {
       glow.style.top = dest.y + 'px'
 
       setTimeout(() => {
+        if (scrubbingRef.current) { animatingRef.current = false; return }
         /* ── PHASE 3: EXPAND ── */
         setTrans(blob, ['width', 'height', 'left', 'top'], T_EXPAND)
         blob.style.width  = toW + 'px'
@@ -369,6 +371,11 @@ export default function MobileNav({ active, onNavigate }) {
   /* ── Sync with external active prop ──────── */
   useEffect(() => {
     if (!active) return
+    // During a scrub, the scrub's own state machine (expandAtIdx on dwell,
+    // clearAllActive on row crossing) owns the pill state. Observer-driven
+    // active updates mid-scroll would otherwise re-expand a row the user
+    // has already scrubbed past.
+    if (scrubbingRef.current) return
     const pageId = NAV_ITEMS.find(n => n.id === active)?.id
     if (!pageId) return
 
@@ -549,12 +556,13 @@ export default function MobileNav({ active, onNavigate }) {
       const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
       const idx = idxFromY(centerY)
 
-      // Scrub → discrete section change: fire one onNavigate per row crossing.
-      // useSectionSnap.navigateTo guards with isAnimating + a 300ms cooldown,
-      // so crossings during a smooth-scroll are dropped (not interrupted).
-      // Acceptable per spec: fast scrubs may skip intermediate sections.
+      // Scrub follows thumb one-to-one: INSTANT scroll bypasses
+      // useSectionSnap.navigateTo's isAnimating + cooldown locks. Release
+      // still uses onNavigate (onTouchEnd) for a smooth final settle.
       if (idx !== lastScrubSectionRef.current) {
-        onNavigate(NAV_ITEMS[idx].id)
+        document
+          .getElementById(NAV_ITEMS[idx].id)
+          ?.scrollIntoView({ behavior: 'auto', block: 'start' })
         lastScrubSectionRef.current = idx
       }
 
