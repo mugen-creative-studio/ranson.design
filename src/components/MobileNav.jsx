@@ -533,11 +533,6 @@ export default function MobileNav({ active, onNavigate }) {
       scrubStartYRef.current = e.touches[0].clientY
       cancelCloseTimer()
       clearDwell()
-      // Disable scroll-snap during the gesture. With `y proximity` active,
-      // mobile Safari resists programmatic scrolls during touch and pulls the
-      // viewport back to the starting snap point — the page appears to flash
-      // to the target section then revert to the origin.
-      document.documentElement.style.scrollSnapType = 'none'
       // If this touch is the one that opens the nav, don't treat later moves
       // in the same gesture as a scrub — jitter near the closed button can
       // otherwise read as "thumb at bottom of bar → scroll to contact".
@@ -559,19 +554,30 @@ export default function MobileNav({ active, onNavigate }) {
       const centerY = Math.max(IH / 2, Math.min(316 - IH / 2, touch.clientY - rect.top))
       const idx = idxFromY(centerY)
 
-      // Scrub = continuous follow: map thumb Y within the nav's row range
-      // linearly to the page scroll range between the first and last
-      // section. No discrete section jumps mid-gesture — the page flows
-      // with the thumb. Release snaps to the hovered section (onTouchEnd
-      // calls onNavigate, and scroll-snap is re-enabled there).
-      const firstCenter = ITEM_CENTER_Y[0]
-      const lastCenter = ITEM_CENTER_Y[NAV_ITEMS.length - 1]
+      // Scrub = continuous follow with section anchoring: each row center
+      // pins to its section's offsetTop, and the page interpolates linearly
+      // between adjacent anchors as the thumb moves between rows. Thumb on
+      // a row → page exactly at that section. Release leaves the page where
+      // it is (no post-gesture snap).
       const navY = touch.clientY - rect.top
-      const t = Math.max(0, Math.min(1, (navY - firstCenter) / (lastCenter - firstCenter)))
-      const firstEl = document.getElementById(NAV_ITEMS[0].id)
-      const lastEl = document.getElementById(NAV_ITEMS[NAV_ITEMS.length - 1].id)
-      if (firstEl && lastEl) {
-        const scrollTop = firstEl.offsetTop + t * (lastEl.offsetTop - firstEl.offsetTop)
+      const centers = ITEM_CENTER_Y
+      let scrollTop
+      if (navY <= centers[0]) {
+        scrollTop = document.getElementById(NAV_ITEMS[0].id)?.offsetTop ?? 0
+      } else if (navY >= centers[centers.length - 1]) {
+        scrollTop = document.getElementById(NAV_ITEMS[NAV_ITEMS.length - 1].id)?.offsetTop ?? 0
+      } else {
+        for (let i = 0; i < centers.length - 1; i++) {
+          if (navY >= centers[i] && navY <= centers[i + 1]) {
+            const tt = (navY - centers[i]) / (centers[i + 1] - centers[i])
+            const topA = document.getElementById(NAV_ITEMS[i].id)?.offsetTop ?? 0
+            const topB = document.getElementById(NAV_ITEMS[i + 1].id)?.offsetTop ?? 0
+            scrollTop = topA + tt * (topB - topA)
+            break
+          }
+        }
+      }
+      if (scrollTop !== undefined) {
         window.scrollTo({ top: scrollTop, left: 0, behavior: 'auto' })
       }
 
@@ -595,10 +601,6 @@ export default function MobileNav({ active, onNavigate }) {
 
     const onTouchEnd = () => {
       clearDwell()
-      // Restore scroll-snap (disabled in onTouchStart). The final onNavigate
-      // below uses useSectionSnap's smooth scroll, which settles onto the
-      // now-re-enabled snap point.
-      document.documentElement.style.scrollSnapType = ''
       if (startedClosedRef.current) {
         // Keep the flag set briefly so the synthesized click that iOS fires
         // after touchend can't hit a nav item that just slid into the touch spot.

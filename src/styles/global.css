@@ -18,13 +18,6 @@ body {
   min-height: 100dvh;
 }
 
-/* scroll-snap header centering on mobile/tablet (desktop uses JS section snap) */
-@media (max-width: 991px) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-}
-
 a {
   color: inherit;
   text-decoration: none;

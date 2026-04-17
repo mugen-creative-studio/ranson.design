@@ -28,10 +28,6 @@
 }
 
 @media (max-width: 991px) {
-  .section {
-    scroll-snap-align: start;
-  }
-
   /* Projects keeps its top-aligned layout with breathing room for the card
      grid. Hero, About, Contact inherit the centered layout from .section. */
   .section[id="projects"] {
