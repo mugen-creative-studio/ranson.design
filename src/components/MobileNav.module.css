@@ -236,3 +236,36 @@
   font-weight: var(--font-weight-button);
   line-height: var(--line-height-button);
 }
+
+/* ── X close button (outside the organism stack) ── */
+.closeButton {
+  position: absolute;
+  left: 50%;
+  top: -56px;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: var(--radius-round);
+  background: rgba(74, 73, 73, 0.50);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--color-gray-50);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.12, 1);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 4;
+}
+
+.nav.open.revealChrome .closeButton {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 260ms cubic-bezier(0.33, 1, 0.68, 1);
+}
