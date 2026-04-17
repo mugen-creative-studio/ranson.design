@@ -409,27 +409,25 @@ export default function MobileNav({ active, onNavigate }) {
     scheduleClose()
   }, [scheduleClose])
 
-  /* Outside click + user scroll → close */
+  /* Outside pointer / outside touchmove → close */
   useEffect(() => {
     if (!isOpen) return
 
     const onPointerDown = (e) => {
       if (navRef.current && !navRef.current.contains(e.target)) closeNav()
     }
-    const onUserScroll = (e) => {
-      // Ignore scroll/touch events inside the nav (finger jitter on tap)
+    const onOutsideTouchMove = (e) => {
+      // Touches that begin inside the nav (scrub) must not close it.
       if (navRef.current && navRef.current.contains(e.target)) return
       closeNav()
     }
 
     document.addEventListener('pointerdown', onPointerDown)
-    window.addEventListener('wheel', onUserScroll, { passive: true })
-    window.addEventListener('touchmove', onUserScroll, { passive: true })
+    window.addEventListener('touchmove', onOutsideTouchMove, { passive: true })
 
     return () => {
       document.removeEventListener('pointerdown', onPointerDown)
-      window.removeEventListener('wheel', onUserScroll)
-      window.removeEventListener('touchmove', onUserScroll)
+      window.removeEventListener('touchmove', onOutsideTouchMove)
     }
   }, [isOpen, closeNav])
 
