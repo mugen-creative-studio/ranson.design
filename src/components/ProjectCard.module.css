@@ -123,3 +123,10 @@
     aspect-ratio: 310 / 348;
   }
 }
+
+/* Hover reveal on desktop — hover-capable devices only. */
+@media (hover: hover) and (min-width: 992px) {
+  .card:hover .content {
+    height: 128px;
+  }
+}
